@@ -43,8 +43,8 @@ confidence_high = np.zeros(n_items)
 standard_error = np.zeros(n_items)
 alphas = np.zeros(n_items)
 
-
 for idx, item in enumerate(items):
+    print(idx)
     chunk = data[['comment_id', 'annotator_id'] + [item]].values
     boot = bootstrap(
         (chunk[:, 0], chunk[:, 1], chunk[:, 2]),
@@ -57,7 +57,7 @@ for idx, item in enumerate(items):
     confidence_high[idx] = boot.confidence_interval.high
     standard_error[idx] = boot.standard_error
     alphas[idx] = simpledorff.calculate_krippendorffs_alpha_for_df(
-        chunk,
+        data[['comment_id', 'annotator_id'] + [item]],
         experiment_col='comment_id',
         annotator_col='annotator_id',
         class_col=item)
